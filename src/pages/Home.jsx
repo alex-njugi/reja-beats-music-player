@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import SearchBar from "../components/SearchBar";
+import SongList from "../components/SongList";
 
 const Home = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('drake');  
   const [songs, setSongs] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch songs when the component mounts
   useEffect(() => {
-    fetchSongs('drake');
-  }, []);
-
-  // Debounce the search query input and fetch songs
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (query.trim()) fetchSongs(query);
-    }, 500);
-
-    // Cleanup function for clearing the debounce
-    return () => clearTimeout(delayDebounce);
+    if (query.trim()) fetchSongs(query);
   }, [query]);
 
-  // Function to fetch songs from the iTunes API
   const fetchSongs = (searchTerm) => {
     fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=music&limit=25`)
       .then((res) => res.json())
@@ -34,36 +24,22 @@ const Home = () => {
       });
   };
 
+  const handleSearch = (searchTerm) => {
+    setQuery(searchTerm);  
+  };
+
   return (
     <div className="container">
       <h1>Music Search Player</h1>
 
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search for songs or artists..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </div>
+      <SearchBar onSearch={handleSearch} /> 
 
       {error && <div className="error">{error}</div>}
 
-      <h2 style={{ textAlign: 'center' }}>MUSIC</h2>
-      <div className="song-list">
-        {songs.length === 0 && !error && <p>No songs found.</p>}
-        {songs.map((song) => (
-          <div className="song-card" key={song.trackId}>
-            <img src={song.artworkUrl100} alt={song.trackName} />
-            <h3>{song.trackName}</h3>
-            <p>{song.artistName}</p>
-            <audio controls src={song.previewUrl}></audio>
-          </div>
-        ))}
-      </div>
+      <h2>MUSIC</h2>
+      <SongList songs={songs} />
     </div>
   );
 };
 
 export default Home;
-
