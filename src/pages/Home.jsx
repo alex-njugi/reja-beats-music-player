@@ -5,22 +5,18 @@ const Home = () => {
   const [songs, setSongs] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch songs when the component mounts
   useEffect(() => {
     fetchSongs('drake');
   }, []);
 
-  // Debounce the search query input and fetch songs
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (query.trim()) fetchSongs(query);
     }, 500);
 
-    // Cleanup function for clearing the debounce
     return () => clearTimeout(delayDebounce);
   }, [query]);
 
-  // Function to fetch songs from the iTunes API
   const fetchSongs = (searchTerm) => {
     fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=music&limit=25`)
       .then((res) => res.json())
