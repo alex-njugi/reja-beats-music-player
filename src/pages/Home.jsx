@@ -29,3 +29,36 @@ const Home = () => {
         setSongs([]);
       });
   };
+
+  return (
+    <div className="container">
+      <h1>Music Search Player</h1>
+
+      <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search for songs or artists..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
+      {error && <div className="error">{error}</div>}
+
+      <h2 style={{ textAlign: 'center' }}>MUSIC</h2>
+      <div className="song-list">
+        {songs.length === 0 && !error && <p>No songs found.</p>}
+        {songs.map((song) => (
+          <div className="song-card" key={song.trackId}>
+            <img src={song.artworkUrl100} alt={song.trackName} />
+            <h3>{song.trackName}</h3>
+            <p>{song.artistName}</p>
+            <audio controls src={song.previewUrl}></audio>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Home;
