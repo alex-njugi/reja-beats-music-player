@@ -16,4 +16,3 @@ const SongList = ({ songs, onSelect }) => {
 };
 
 export default SongList;
-
