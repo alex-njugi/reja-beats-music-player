@@ -5,28 +5,17 @@ const Home = () => {
   const [songs, setSongs] = useState([]);
   const [error, setError] = useState(null);
 
-  // Fetch songs when the component mounts
-  useEffect(() => {
-    fetchSongs('drake');
-  }, []);
+  const fetchSongs = (searchTerm = '') => {
+    const url = `http://localhost:3000/songs?q=${encodeURIComponent(searchTerm)}`;
 
-  // Debounce the search query input and fetch songs
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (query.trim()) fetchSongs(query);
-    }, 500);
-
-    // Cleanup function for clearing the debounce
-    return () => clearTimeout(delayDebounce);
-  }, [query]);
-
-  // Function to fetch songs from the iTunes API
-  const fetchSongs = (searchTerm) => {
-    fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(searchTerm)}&media=music&limit=25`)
-      .then((res) => res.json())
-      .then((data) => {
-        setSongs(data.results);
-        setError(null);
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('Network error');
+        return res.json();
+      })
+      .then(data => {
+        setSongs(data);
+        setError(data.length === 0 ? 'No songs found.' : null);
       })
       .catch(() => {
         setError('Something went wrong while fetching songs.');
@@ -34,11 +23,22 @@ const Home = () => {
       });
   };
 
-  return (
-    <div className="container">
-      <h1>Music Search Player</h1>
+  useEffect(() => {
+    fetchSongs(); // initial load
+  }, []);
 
-      <div className="search-bar">
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchSongs(query);
+    }, 400);
+    return () => clearTimeout(delay);
+  }, [query]);
+
+  return (
+    <div className="container" data-aos="fade-up">
+      <h1 data-aos="fade-down">Search & Play Music</h1>
+
+      <div className="search-bar" data-aos="fade-up" data-aos-delay="200">
         <input
           type="text"
           placeholder="Search for songs or artists..."
@@ -47,13 +47,18 @@ const Home = () => {
         />
       </div>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error" data-aos="fade-in">{error}</div>}
 
-      <h2 style={{ textAlign: 'center' }}>MUSIC</h2>
+      <h2 style={{ textAlign: 'center' }} data-aos="zoom-in">MUSIC</h2>
+
       <div className="song-list">
-        {songs.length === 0 && !error && <p>No songs found.</p>}
-        {songs.map((song) => (
-          <div className="song-card" key={song.trackId}>
+        {songs.map((song, i) => (
+          <div
+            className="song-card"
+            key={song.id}
+            data-aos="zoom-in"
+            data-aos-delay={i * 50}
+          >
             <img src={song.artworkUrl100} alt={song.trackName} />
             <h3>{song.trackName}</h3>
             <p>{song.artistName}</p>
