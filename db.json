@@ -1,0 +1,39 @@
+{
+  "songs": [
+    {
+      "id": "1",
+      "trackName": "God's Plan",
+      "artistName": "Drake",
+      "artworkUrl100": "/God's Plan.jpeg",
+      "previewUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+    {
+      "id": "2",
+      "trackName": "Blinding Lights",
+      "artistName": "The Weeknd",
+      "artworkUrl100": "/The Weeknd.jpeg",
+      "previewUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+    {
+      "id": "2b33",
+      "trackName": "alex",
+      "artistName": "james",
+      "artworkUrl100": "file:///home/njugi/Downloads/moses-vega-kZagmH4ZkHU-unsplash%20(1).jpg",
+      "previewUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "test",
+      "email": "test@example.com",
+      "password": "1234"
+    },
+    {
+      "id": "625d",
+      "username": "alex",
+      "email": "alexnjugi11@gmail.com",
+      "password": "1234"
+    }
+  ]
+}
