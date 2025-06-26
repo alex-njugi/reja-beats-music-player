@@ -18,12 +18,18 @@ function Signup() {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch('http://localhost:3000/users', {
+      const res = await fetch('https://music-player-backend-test2.onrender.com/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // important for cookies if needed later
         body: JSON.stringify(form),
       });
-      if (!res.ok) throw new Error('Signup failed');
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Signup failed');
+      }
+
       setMessage('✅ Signup successful! You can now log in.');
       setForm({ username: '', email: '', password: '' });
     } catch (err) {
