@@ -6,7 +6,7 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   const fetchSongs = (searchTerm = '') => {
-    const url = `http://localhost:3000/songs?q=${encodeURIComponent(searchTerm)}`;
+    const url = `https://music-player-backend-test2.onrender.com/api/search?q=${encodeURIComponent(searchTerm)}`;
 
     fetch(url)
       .then(res => {
@@ -59,10 +59,10 @@ const Home = () => {
             data-aos="zoom-in"
             data-aos-delay={i * 50}
           >
-            <img src={song.artworkUrl100} alt={song.trackName} />
-            <h3>{song.trackName}</h3>
-            <p>{song.artistName}</p>
-            <audio controls src={song.previewUrl}></audio>
+            <img src={song.album_cover} alt={song.title} />
+            <h3>{song.title}</h3>
+            <p>{song.artist}</p>
+            <audio controls src={song.url}></audio>
           </div>
         ))}
       </div>
