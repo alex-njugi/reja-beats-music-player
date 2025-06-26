@@ -4,7 +4,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 function Login({ onLogin }) {
-  const [form, setForm] = useState({ username: '', password: '' });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -21,18 +21,18 @@ function Login({ onLogin }) {
     setError('');
 
     try {
-      const res = await fetch(`http://localhost:3000/users?username=${form.username}`);
-      const users = await res.json();
-      const user = users.find(u => u.password === form.password);
+      const res = await fetch(`https://music-player-backend-test2.onrender.com/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Sends/receives HTTP-only cookies
+        body: JSON.stringify(form),
+      });
 
-      if (user) {
-        localStorage.setItem('loggedInUser', JSON.stringify(user));
-        onLogin(user);
-        navigate('/add-song');
-      } else {
-        setError('❌ Invalid credentials');
-      }
-    } catch {
+      if (!res.ok) throw new Error('Invalid credentials');
+
+      onLogin(); // If needed, you can fetch profile info here
+      navigate('/add-song');
+    } catch (err) {
       setError('❌ Login failed');
     }
   };
@@ -42,10 +42,10 @@ function Login({ onLogin }) {
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <input
-          name="username"
-          value={form.username}
+          name="email"
+          value={form.email}
           onChange={handleChange}
-          placeholder="Username"
+          placeholder="Email"
           required
         />
         <input
