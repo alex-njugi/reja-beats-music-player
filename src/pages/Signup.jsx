@@ -19,11 +19,12 @@ function Signup() {
     setMessage('');
     try {
       const res = await fetch('https://music-player-backend-test2.onrender.com/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // important for cookies if needed later
-        body: JSON.stringify(form),
-      });
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  credentials: 'include',
+  body: JSON.stringify(form),
+});
+
 
       if (!res.ok) {
         const data = await res.json();
