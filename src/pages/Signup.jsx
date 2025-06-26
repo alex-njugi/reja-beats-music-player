@@ -25,7 +25,6 @@ function Signup() {
   body: JSON.stringify(form),
 });
 
-
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.error || 'Signup failed');
