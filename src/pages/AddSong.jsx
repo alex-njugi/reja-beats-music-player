@@ -4,10 +4,10 @@ import 'aos/dist/aos.css';
 
 function AddSong() {
   const [formData, setFormData] = useState({
-    trackName: '',
-    artistName: '',
-    artworkUrl100: '',
-    previewUrl: '',
+    title: '',
+    artist: '',
+    album_cover: '',
+    url: '',
   });
 
   const [success, setSuccess] = useState(false);
@@ -29,21 +29,24 @@ function AddSong() {
     setError('');
 
     try {
-      const res = await fetch('https://music-player-backend-test2.onrender.com', {
+      const res = await fetch('https://music-player-backend-test2.onrender.com/api/songs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // important to send JWT cookie
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error('Failed to upload song.');
+      if (!res.ok) throw new Error('Failed to upload song');
 
       setSuccess(true);
       setTimeout(() => setSuccess(false), 4000);
       setFormData({
-        trackName: '',
-        artistName: '',
-        artworkUrl100: '',
-        previewUrl: '',
+        title: '',
+        artist: '',
+        album_cover: '',
+        url: '',
       });
     } catch (err) {
       setError(err.message);
@@ -61,33 +64,33 @@ function AddSong() {
         <form className="song-form" onSubmit={handleSubmit}>
           <input
             type="text"
-            name="trackName"
+            name="title"
             placeholder="Song Title"
-            value={formData.trackName}
+            value={formData.title}
             onChange={handleChange}
             required
           />
           <input
             type="text"
-            name="artistName"
+            name="artist"
             placeholder="Artist Name"
-            value={formData.artistName}
+            value={formData.artist}
             onChange={handleChange}
             required
           />
           <input
             type="url"
-            name="artworkUrl100"
+            name="album_cover"
             placeholder="Album Cover URL (image)"
-            value={formData.artworkUrl100}
+            value={formData.album_cover}
             onChange={handleChange}
             required
           />
           <input
             type="url"
-            name="previewUrl"
-            placeholder="Preview Audio URL"
-            value={formData.previewUrl}
+            name="url"
+            placeholder="MP3 File URL"
+            value={formData.url}
             onChange={handleChange}
             required
           />
